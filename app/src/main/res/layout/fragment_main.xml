@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="com.example.dell.greetingsapplication.MainActivityFragment"
+    >
+
+       <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+           xmlns:tools="http://schemas.android.com/tool"
+           android:id="@+id/cardScrollView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:fillViewport="true" >
+
+              <LinearLayout
+
+                  android:id="@+id/linear_scroll"
+                  android:layout_width="wrap_content"
+                  android:layout_height="fill_parent"
+                  android:orientation="horizontal"
+                  >
+
+                     <android.support.v7.widget.RecyclerView
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:id="@+id/daysList"
+                         />
+
+
+              </LinearLayout>
+
+       </android.support.v4.widget.NestedScrollView>
+
+
+       <Spinner
+           android:id="@+id/spinner1"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+          android:layout_below="@id/cardScrollView"
+
+
+           android:background="@android:drawable/dialog_holo_light_frame" />
+
+       <ImageView
+           android:layout_width="75dp"
+           android:layout_height="75dp"
+           android:src="@drawable/down"
+           android:layout_below="@id/cardScrollView"
+          android:layout_alignRight="@id/spinner1"
+           android:layout_alignEnd="@id/spinner1"
+
+           />
+
+
+
+
+
+
+
+
+</RelativeLayout>
