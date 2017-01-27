@@ -16,8 +16,19 @@ public class FlickerModel implements Serializable {
     private int tag;
     private boolean isFav;
 
+    private int  source;
+
+
     public String getSecret() {
         return secret;
+    }
+
+    public int getSource() {
+        return source;
+    }
+
+    public void setSource(int source) {
+        this.source = source;
     }
 
     public void setSecret(String secret) {

@@ -1,6 +1,6 @@
 package com.example.dell.mygreeting.Connection;
 
-import com.example.dell.greetingsapplication.models.FlickerModel;
+import com.example.dell.mygreeting.Models.FlickerModel;
 
 import java.util.List;
 

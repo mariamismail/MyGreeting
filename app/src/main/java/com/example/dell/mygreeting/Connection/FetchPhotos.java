@@ -32,8 +32,10 @@ public class FetchPhotos extends AsyncTask<String, Void, List<FlickerModel>> {
         this.listener=listener ;
     }{
     }
-    private List<FlickerModel> popular = new ArrayList<>();
-    private List<FlickerModel> top = new ArrayList<>();
+    private List<FlickerModel> newy = new ArrayList<>();
+    private List<FlickerModel> birth = new ArrayList<>();
+    private List<FlickerModel> grad = new ArrayList<>();
+    private List<FlickerModel> eid = new ArrayList<>();
     private List<FlickerModel> type = new ArrayList<>();
 
 
@@ -118,10 +120,10 @@ public class FetchPhotos extends AsyncTask<String, Void, List<FlickerModel>> {
         String[] imageUrls = new String[pages];
 
 
-        final String LIST = "results";
+        final String LIST = "photos";
 
         JSONObject PhotoJson = new JSONObject(FlickerJsonStr);
-        JSONArray PhotosArray = PhotoJson.getJSONArray(LIST);
+        JSONArray PhotosArray = new JSONArray(PhotoJson.getJSONObject(LIST).getString("photo"));
 
 
         int len = PhotosArray.length();
@@ -142,36 +144,37 @@ public class FetchPhotos extends AsyncTask<String, Void, List<FlickerModel>> {
 
 
 
-            int farm = OnePhoto.getInt("id");
-            String id = String.valueOf(farm);
+            int farm = OnePhoto.getInt("farm");
+            String farm1 = String.valueOf(farm);
 
           model.setFarm(farm);
 
 
-            String Url="https://"+id+".staticflickr.com//"+server+"//"+id1+"_"+secret+".jpg";
-
-                    Uri builtUri = Uri.parse("http://"+id+"staticflickr.com").buildUpon()
-
-                    .appendEncodedPath(server)
-                    .appendEncodedPath(id1+"_"+secret+".jpg")
-                    .build();
-
-            String photourl = builtUri.toString();
+            String Url="https://"+"farm"+farm1+".staticflickr.com//"+server+"//"+id1+"_"+secret+".jpg";
 
 
-            model.setUrl(photourl);
 
 
-            if (tag=="popular"){
-                popular.add(model);
-
-                type=popular;}
-
-            else if (tag=="top_rated"){
-                top.add(model);
-                type=top;}
+            model.setUrl(Url);
 
 
+            if (tag=="mariambio2012Eid"){
+                eid.add(model);
+
+                type=eid;}
+
+            else if (tag=="mariambio2012Birth"){
+                birth.add(model);
+                type=birth;}
+
+            if (tag=="mariambio2012Ran"){
+                grad.add(model);
+
+                type=grad;}
+
+            else if (tag=="mariambio2012New"){
+                newy.add(model);
+                type=newy;}
 
 
         }

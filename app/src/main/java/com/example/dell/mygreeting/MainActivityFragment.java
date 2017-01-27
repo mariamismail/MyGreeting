@@ -1,5 +1,6 @@
 package com.example.dell.mygreeting;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
-import com.example.dell.greetingsapplication.Adapters.CardAdapter;
-import com.example.dell.greetingsapplication.Connection.Listener;
-import com.example.dell.greetingsapplication.Mangers.ImagesMnager;
-import com.example.dell.greetingsapplication.models.FlickerModel;
+import com.example.dell.mygreeting.Adapters.CardAdapter;
+import com.example.dell.mygreeting.Connection.Listener;
+import com.example.dell.mygreeting.Mangers.ImagesMnager;
+import com.example.dell.mygreeting.Models.FlickerModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +26,16 @@ import java.util.List;
  * Created by DELL on 1/10/2017.
  */
 
-public class MainActivityFragment extends Fragment implements Listener {
+public class MainActivityFragment extends Fragment {
+    Spinner dropdown;
      RecyclerView daysList;
+    int y;
     public static final int LIST_MODE = 0x0a;
     ArrayList<FlickerModel> images = new ArrayList<>();
-    FlickerModel model= new FlickerModel();
-    public MainActivityFragment() {
+    int []drwable ={R.drawable.ran2,R.drawable.ran1,R.drawable.ran3,R.drawable.ran4,R.drawable.ran5};
 
+
+    public MainActivityFragment() {
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,26 +58,54 @@ public class MainActivityFragment extends Fragment implements Listener {
         daysList = (RecyclerView) rootView.findViewById(R.id.daysList);
       daysList.setHasFixedSize(true);
 
-        daysList.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        callWebService();
-        model.setUrl("https://farm1.staticflickr.com//624//32095916031_8176c71beb_b.jpg");
-         images.add(model);
-
-//        CardAdapter adapter = new CardAdapter (images ,  getActivity() , LIST_MODE);
-//        daysList.setAdapter(adapter);
+        daysList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        for (int i:drwable){
+            FlickerModel model= new FlickerModel();
+         model.setSource(i);
+        images.add(model);}
 
 
-        Spinner dropdown = (Spinner)rootView.findViewById(R.id.spinner1);
 
-        String[] items = new String[]{"Choose Celebration","BirthDay", "Eid", "Graduation"};
+         dropdown = (Spinner)rootView.findViewById(R.id.spinner1);
+
+        String[] items = new String[]{"New Year","BirthDay", "Eid", "Graduation"};
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getActivity(),R.layout.spineer_item, items);
         dropdown.setAdapter(adapter1);
+
+        Button starter= (Button)rootView.findViewById(R.id.button);
+        starter.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                openGallery();
+            }
+        });
+
+
+        onOrientationChange(getResources().getConfiguration().orientation , images);
         return rootView;
     }
-    public void callWebService(){
+    public void openGallery(){
+        String text=dropdown.getSelectedItem().toString();
 
-        ImagesMnager.getInstance().getPopular(this);
+        if(text=="New Year"){
+            y=ImagesMnager.NEW;
+        }
+        else if(text=="BirthDay"){
+            y=ImagesMnager.BiRTH;
+        }
+        else if(text=="Eid"){
+            y=ImagesMnager.EID;
+        }
+        else if(text=="Graduation"){
+            y=ImagesMnager.GRAD;
+        }
+        Intent onclickIntent = new Intent(getActivity(), GalleryActivity.class);
+
+
+        onclickIntent .putExtra("type", y);
+        startActivity(onclickIntent);
+
+       // ImagesMnager.getInstance().getPopular(this);
 //        FetchPhotos task= new FetchPhotos(new MainActivityFragment());
 //        task.execute("mariambio2012Eid");
 
@@ -83,21 +116,8 @@ public class MainActivityFragment extends Fragment implements Listener {
     public void onOrientationChange(int orientation , final List<FlickerModel> images){
 
         if(orientation == Configuration.ORIENTATION_PORTRAIT){
-            CardAdapter adapter = new CardAdapter (images ,  getActivity() , LIST_MODE);
+            CardAdapter adapter = new CardAdapter (images ,  getActivity());
             daysList.setAdapter(adapter);}}
-//
-    @Override
-    public void onDownloadFinished(List<FlickerModel> images) {
-        onOrientationChange(getResources().getConfiguration().orientation , images);
-    }
 
-    @Override
-    public void onFail(Exception e) {
 
-    }
-
-    @Override
-    public void onGetReviews(List<String> result) {
-
-    }
 }
